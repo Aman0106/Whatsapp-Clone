@@ -1,5 +1,6 @@
 package com.example.whatsappclone
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -71,6 +72,8 @@ class OtpActivity : AppCompatActivity() {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this){
             if(it.isSuccessful){
                 Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, SetupProfile::class.java))
+                finishAffinity()
             }else{
                 Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
             }
@@ -156,7 +159,8 @@ class OtpActivity : AppCompatActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
 
             override fun afterTextChanged(p0: Editable?) {
-                verifyOtp()
+                if(getOtpFromUser().length > 5)
+                    verifyOtp()
             }
         })
     }

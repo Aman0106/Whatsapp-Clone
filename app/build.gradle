@@ -42,9 +42,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 
-    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.3'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
     implementation 'com.google.firebase:firebase-auth-ktx'
-
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
 }
 
 apply plugin: 'com.google.gms.google-services'

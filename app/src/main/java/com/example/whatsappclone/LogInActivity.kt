@@ -1,6 +1,5 @@
 package com.example.whatsappclone
 
-import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,10 +21,9 @@ class LogInActivity : AppCompatActivity() {
 
     private var phoneNumber:String? = null
     private var verificationId:String? = null
+
     private lateinit var progressBar: ProgressBar
-
-
-    private val loading = LoadingDialogue(this)
+    private val loading = LoadingDialogue(this, "Sending Otp...")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +32,8 @@ class LogInActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        val btnContinue: Button = findViewById(R.id.btn_login_continue)
-        val edtContact: EditText = findViewById(R.id.edt_contact)
+        val btnContinue: Button = findViewById(R.id.btn_continue)
+        val edtContact: EditText = findViewById(R.id.edt_name)
         edtContact.requestFocus()
 
         progressBar = ProgressBar(this)
@@ -60,7 +58,7 @@ class LogInActivity : AppCompatActivity() {
 
                 override fun onVerificationFailed(p0: FirebaseException) {
                     Toast.makeText(this@LogInActivity, "Unable to Authenticate", Toast.LENGTH_SHORT).show()
-                    loading.isDismiss()
+                    loading.stopLoading()
                 }
 
                 override fun onCodeSent(verifyId: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -70,8 +68,7 @@ class LogInActivity : AppCompatActivity() {
                     val intent = Intent(this@LogInActivity, OtpActivity::class.java)
                     intent.putExtra("contact", phoneNumber)
                     intent.putExtra("verifyId", verifyId)
-                    loading.isDismiss()
-                    finish()
+                    loading.stopLoading()
                     startActivity(intent)
                 }
             })
