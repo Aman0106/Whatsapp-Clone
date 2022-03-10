@@ -1,4 +1,4 @@
-package com.example.whatsappclone
+package com.example.whatsappclone.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.whatsappclone.R
 import com.example.whatsappclone.utils.LoadingDialogue
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 class LogInActivity : AppCompatActivity() {
 
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var mFirebaseAuth: FirebaseAuth
 
     private var phoneNumber:String? = null
     private var verificationId:String? = null
@@ -30,7 +31,12 @@ class LogInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_log_in)
         supportActionBar?.hide()
 
-        firebaseAuth = FirebaseAuth.getInstance()
+        mFirebaseAuth = FirebaseAuth.getInstance()
+
+        if(mFirebaseAuth.currentUser != null){
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         val btnContinue: Button = findViewById(R.id.btn_continue)
         val edtContact: EditText = findViewById(R.id.edt_name)
@@ -47,7 +53,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun verifyPhoneNumber(){
-        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
+        val options = PhoneAuthOptions.newBuilder(mFirebaseAuth)
             .setPhoneNumber(phoneNumber!!)
             .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(this)

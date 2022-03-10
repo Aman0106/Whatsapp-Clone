@@ -1,4 +1,4 @@
-package com.example.whatsappclone
+package com.example.whatsappclone.activities
 
 import android.content.Intent
 import android.net.Uri
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.whatsappclone.R
 import com.example.whatsappclone.classes.User
 import com.example.whatsappclone.utils.LoadingDialogue
 import com.google.firebase.auth.FirebaseAuth
@@ -77,7 +78,7 @@ class SetupProfile : AppCompatActivity() {
                             mFirebaseDatabase.reference.child("users").child(uid!!).setValue(user)
                                 .addOnSuccessListener {
                                     loading.stopLoading()
-                                    startActivity(Intent(this,MainActivity::class.java))
+                                    startActivity(Intent(this, MainActivity::class.java))
                                 }
                         }
                     }
@@ -90,7 +91,7 @@ class SetupProfile : AppCompatActivity() {
                 mFirebaseDatabase.reference.child("users").child(uid!!).setValue(user)
                     .addOnSuccessListener {
                         loading.stopLoading()
-                        startActivity(Intent(this,MainActivity::class.java))
+                        startActivity(Intent(this, MainActivity::class.java))
                     }
             }
         }
@@ -132,7 +133,7 @@ class SetupProfile : AppCompatActivity() {
 
         mFirebaseDatabase.reference.child("users").child(uid!!).setValue(user).addOnSuccessListener {
             loading.stopLoading()
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
             .addOnFailureListener{
                 Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()

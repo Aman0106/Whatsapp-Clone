@@ -1,4 +1,4 @@
-package com.example.whatsappclone
+package com.example.whatsappclone.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +8,8 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.example.whatsappclone.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 
 class OtpActivity : AppCompatActivity() {
