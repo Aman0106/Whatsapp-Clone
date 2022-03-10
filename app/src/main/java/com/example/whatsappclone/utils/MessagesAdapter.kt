@@ -9,9 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsappclone.R
 import com.example.whatsappclone.classes.Message
-import com.github.pgreze.reactions.ReactionPopup
-import com.github.pgreze.reactions.dsl.reactionConfig
-import com.github.pgreze.reactions.dsl.reactions
 import com.google.firebase.auth.FirebaseAuth
 
 class MessagesAdapter(private val context:Context, private val messageList: ArrayList<Message>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {

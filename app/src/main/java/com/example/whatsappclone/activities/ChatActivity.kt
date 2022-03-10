@@ -11,8 +11,10 @@ import com.example.whatsappclone.classes.Message
 import com.example.whatsappclone.utils.MessagesAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ChatActivity : AppCompatActivity() {
 
@@ -53,23 +55,12 @@ class ChatActivity : AppCompatActivity() {
 
 
         sendBtn.setOnClickListener{
-            val msgText = messageBox.text.toString()
-            val date = Date()
-            val message = Message(msgText,senderUid,date.time.toString())
-
-            mDbReference.child("chats").child(senderRoom!!).child("messages").push().setValue(message).addOnSuccessListener {
-
-                val msgText = messageBox.text.toString()
-                val date = Date()
-                val message = Message(msgText,senderUid,date.time.toString())
-
-                mDbReference.child("chats").child(receiverRoom!!).child("messages").push().setValue(message)
-
-                messageBox.setText("")
-            }
+            sendMessage()
         }
 
-        mDbReference.child("chats").child(senderRoom!!).child("messages").addValueEventListener(object: ValueEventListener{
+        mDbReference.child("chats")
+            .child(senderRoom!!)
+            .child("messages").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 messageList.clear()
                 for (postSnapshot in snapshot.children){
@@ -98,4 +89,28 @@ class ChatActivity : AppCompatActivity() {
         finish()
         return super.onSupportNavigateUp()
     }
+
+    private fun sendMessage(){
+        val msgText = messageBox.text.toString()
+        val date = Date()
+        val message = Message(msgText,senderUid,date.time.toString())
+
+        val randomKey = mDbReference.push().key
+        val lastMessageObject = HashMap<String,String>()
+        lastMessageObject["lastMsg"] = message.message!!
+        lastMessageObject["lastMsgTime"] = message.timeStamp!!
+        mDbReference.child("chats").child(senderRoom!!).updateChildren(lastMessageObject as Map<String,String>)
+        mDbReference.child("chats").child(receiverRoom!!).updateChildren(lastMessageObject as Map<String,String>)
+
+        mDbReference.child("chats")
+            .child(senderRoom!!)
+            .child("messages")
+            .child(randomKey!!).setValue(message).addOnSuccessListener {
+
+                mDbReference.child("chats").child(receiverRoom!!).child("messages").child(randomKey).setValue(message)
+
+                messageBox.setText("")
+            }
+    }
+
 }
